@@ -31,7 +31,7 @@ jobs:
               run: cd build
 
             - name: Configure CMake
-              run: cmake --preset=release-noplugins ..
+              run: cmake --preset=release-noplugins ${{ github.workspace }}
 
             - name: Build libheif
               run: make
