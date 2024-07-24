@@ -25,6 +25,7 @@ jobs:
               run: mkdir build
 
             - name: Create output directory variable
+              id: buildoutput
               run: echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
             - name: CD into build directory
@@ -40,4 +41,4 @@ jobs:
               uses: actions/upload-artifact@v4
               with:
                 name: libheif
-                path: $build-output-dir/libheif
+                path: ${{ steps.buildoutput.outputs.build-output-dir }}
