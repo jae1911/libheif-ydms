@@ -11,8 +11,26 @@ jobs:
         steps:
             - name: Check out repository code
               uses: actions/checkout@v4
+              
             - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-            - name: List files in the repository
+
+            - name: "CD into repo directory"
               run: |
-                ls ${{ github.workspace }}
-            - run: echo "🍏 This job's status is ${{ job.status }}."
+                cd ${{ github.workspace }}
+
+            - name: "Make build directory"
+              run: mkdir build
+
+            - name: Create output directory variable
+              run: echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+
+            - name: CD into build directory
+              run: cd build
+
+            - name: Configure CMake
+              run: cmake --preset=release-noplugins ..
+
+            - name: Build libheif
+              run: make
+
+            - run: 
