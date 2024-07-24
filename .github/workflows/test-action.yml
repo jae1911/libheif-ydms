@@ -37,6 +37,12 @@ jobs:
             - name: Build libheif
               run: make -j$(grep -c processor /proc/cpuinfo)
             
+            - name: "[Debug] List build directory contents again"
+              run: ls -lah
+            
+            - name: "[Debug] List libheif directory"
+              run: ls -lah ./libheif
+            
             - name: Archive and put a pretty bow on it
               uses: actions/upload-artifact@v4
               with:
