@@ -1,5 +1,5 @@
-name: GitHub Actions Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+name: Build libheif
+run-name: ${{ github.actor }} is building libheif
 on:
     push:
         branches:
@@ -12,11 +12,14 @@ jobs:
             - name: Check out repository code
               uses: actions/checkout@v4
 
-            - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+            - run: echo "The ${{ github.repository }} cloned"
 
             - name: "CD into repo directory"
               run: |
                 cd ${{ github.workspace }}
+            
+            - name: "[Debug] List directory contents"
+              run: "ls -lah"
 
             - name: Make build directory
               run: mkdir build
