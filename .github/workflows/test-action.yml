@@ -40,4 +40,4 @@ jobs:
               uses: actions/upload-artifact@v4
               with:
                 name: libheif
-                path: $build-output-dir/out
+                path: $build-output-dir/libheif
