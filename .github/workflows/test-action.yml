@@ -28,19 +28,20 @@ jobs:
               id: buildoutput
               run: echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
-            - name: CD into build directory
-              run: cd build
-
             - name: Configure CMake
-              run: cmake --preset=release-noplugins ${{ github.workspace }}
+              working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
+              run: cmake --preset=release-noplugins ..
 
             - name: Build libheif
+              working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
               run: make -j$(grep -c processor /proc/cpuinfo)
             
             - name: "[Debug] List build directory contents again"
+              working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
               run: ls -lah
             
             - name: "[Debug] List libheif directory"
+              working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
               run: ls -lah ./libheif
             
             - name: Archive and put a pretty bow on it
