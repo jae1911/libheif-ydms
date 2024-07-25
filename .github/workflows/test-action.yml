@@ -7,19 +7,39 @@ on:
 
 jobs:
     Build-Libheif-All-Platforms:
-        runs-on: ubuntu-latest
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                os: [ubuntu-latest, windows-latest]
+                build_type: [Release]
+                c_compiler: [clang, cl]
+                include:
+                    - os: windows-latest
+                      c_compiler: cl
+                      cpp_compiler: cl
+                      dir_list: dir
+
+                    - os: ubuntu-latest
+                      c_compiler: clang
+                      cpp_compiler: clang
+                      dir_list: ls -lah
+                exclude:
+                    - os: windows-latest
+                      c_compiler: clang
+                      cpp_compiler: clang
+
+                    - os: ubuntu-latest
+                      c_compiler: cl
+                      cpp_compiler: cl
+        
         steps:
             - name: Check out repository code
               uses: actions/checkout@v4
 
-            - run: echo "The ${{ github.repository }} cloned"
-
-            - name: "CD into repo directory"
-              run: |
-                cd ${{ github.workspace }}
+            - run: echo "${{ github.repository }} cloned"
             
             - name: "[Debug] List directory contents"
-              run: "ls -lah"
+              run: ${{ matrix.dir_list }}
 
             - name: Make build directory
               run: mkdir build
@@ -34,15 +54,15 @@ jobs:
 
             - name: Build libheif
               working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
-              run: make -j$(grep -c processor /proc/cpuinfo)
+              run: make
             
             - name: "[Debug] List build directory contents again"
               working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
-              run: ls -lah
+              run: ${{ matrix.dir_list }}
             
             - name: "[Debug] List libheif directory"
               working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
-              run: ls -lah ./libheif
+              run: ${{ matrix.dir_list }} "./libheif"
             
             - name: Archive and put a pretty bow on it
               uses: actions/upload-artifact@v4
