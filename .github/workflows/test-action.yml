@@ -5,6 +5,8 @@ on:
         branches:
             - cyro/feat/libheif-build-actions
 
+# on: workflow_dispatch
+
 jobs:
     Build-Linux:
         runs-on: ubuntu-latest
@@ -69,6 +71,10 @@ jobs:
             - name: Configure CMake
               working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
               run: cmake --preset=release-noplugins ..
+            
+            - name: "[Debug] List build config"
+              working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
+              run: dir
 
             - name: Build libheif
               working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
