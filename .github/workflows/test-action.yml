@@ -6,35 +6,8 @@ on:
             - cyro/feat/libheif-build-actions
 
 jobs:
-    Build-Libheif-All-Platforms:
-        runs-on: ${{ matrix.os }}
-        strategy:
-            matrix:
-                os: [ubuntu-latest, windows-latest]
-                build_type: [Release]
-                c_compiler: [clang, cl]
-                cpp_compiler: [clang, cl]
-                dir_list: [dir, ls -lah]
-                include:
-                    - os: windows-latest
-                      c_compiler: cl
-                      cpp_compiler: cl
-                      dir_list: dir
-
-                    - os: ubuntu-latest
-                      c_compiler: clang
-                      cpp_compiler: clang
-                      dir_list: ls -lah
-                exclude:
-                    - os: windows-latest
-                      c_compiler: clang
-                      cpp_compiler: clang
-                      dir_list: ls -lah
-
-                    - os: ubuntu-latest
-                      c_compiler: cl
-                      cpp_compiler: cl
-                      dir_list: dir
+    Build-Linux:
+        runs-on: ubuntu-latest
         
         steps:
             - name: Check out repository code
@@ -43,7 +16,7 @@ jobs:
             - run: echo "${{ github.repository }} cloned"
             
             - name: "[Debug] List directory contents"
-              run: ${{ matrix.dir_list }}
+              run: ls -lah
 
             - name: Make build directory
               run: mkdir build
@@ -62,14 +35,56 @@ jobs:
             
             - name: "[Debug] List build directory contents again"
               working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
-              run: ${{ matrix.dir_list }}
+              run: ls -lah
             
             - name: "[Debug] List libheif directory"
               working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
-              run: ${{ matrix.dir_list }} "./libheif"
+              run: "ls -lah ./libheif"
             
             - name: Archive and put a pretty bow on it
               uses: actions/upload-artifact@v4
               with:
                 name: libheif
                 path: ${{ steps.buildoutput.outputs.build-output-dir }}/libheif
+    
+    Build-Windows:
+        runs-on: windows-latest
+        
+        steps:
+            - name: Check out repository code
+              uses: actions/checkout@v4
+
+            - run: echo "${{ github.repository }} cloned"
+            
+            - name: "[Debug] List directory contents"
+              run: dir
+
+            - name: Make build directory
+              run: mkdir build
+
+            - name: Create output directory variable
+              id: buildoutput
+              run: echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+
+            - name: Configure CMake
+              working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
+              run: cmake --preset=release-noplugins ..
+
+            - name: Build libheif
+              working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
+              run: make
+            
+            - name: "[Debug] List build directory contents again"
+              working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
+              run: dir
+            
+            - name: "[Debug] List libheif directory"
+              working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
+              run: dir "./libheif"
+            
+            - name: Archive and put a pretty bow on it
+              uses: actions/upload-artifact@v4
+              with:
+                name: libheif
+                path: ${{ steps.buildoutput.outputs.build-output-dir }}/libheif
+
