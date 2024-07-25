@@ -30,6 +30,10 @@ jobs:
             - name: Configure CMake
               working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
               run: cmake --preset=release-noplugins ..
+            
+            - name: "[Debug] List build config"
+              working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
+              run: ls -lah
 
             - name: Build libheif
               working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
