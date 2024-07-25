@@ -26,26 +26,26 @@ jobs:
               run: echo "build-output-dir='${{ github.workspace }}/build'" >> "$GITHUB_OUTPUT"
 
             - name: Configure CMake
-              working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
+              working-directory: ${{ steps.buildoutput.outputs.buildoutput }}
               run: cmake --preset=release-noplugins ..
 
             - name: Build libheif
-              working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
+              working-directory: ${{ steps.buildoutput.outputs.buildoutput }}
               run: make
             
             - name: "[Debug] List build directory contents again"
-              working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
+              working-directory: ${{ steps.buildoutput.outputs.buildoutput }}
               run: ls -lah
             
             - name: "[Debug] List libheif directory"
-              working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
+              working-directory: ${{ steps.buildoutput.outputs.buildoutput }}
               run: "ls -lah ./libheif"
             
             - name: Archive and put a pretty bow on it
               uses: actions/upload-artifact@v4
               with:
                 name: libheif
-                path: ${{ steps.buildoutput.outputs.build-output-dir }}/libheif
+                path: ${{ steps.buildoutput.outputs.buildoutput }}/libheif
     
     Build-Windows:
         runs-on: windows-latest
@@ -67,24 +67,24 @@ jobs:
               run: echo "build-output-dir=${{ github.workspace }}/build" >> "$Env:GITHUB_OUTPUT"
 
             - name: Configure CMake
-              working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
+              working-directory: ${{ steps.buildoutput.outputs.buildoutput }}
               run: cmake --preset=release-noplugins ..
 
             - name: Build libheif
-              working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
+              working-directory: ${{ steps.buildoutput.outputs.buildoutput }}
               run: make
             
             - name: "[Debug] List build directory contents again"
-              working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
+              working-directory: ${{ steps.buildoutput.outputs.buildoutput }}
               run: dir
             
             - name: "[Debug] List libheif directory"
-              working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
+              working-directory: ${{ steps.buildoutput.outputs.buildoutput }}
               run: dir "./libheif"
             
             - name: Archive and put a pretty bow on it
               uses: actions/upload-artifact@v4
               with:
                 name: libheif
-                path: ${{ steps.buildoutput.outputs.build-output-dir }}/libheif
+                path: ${{ steps.buildoutput.outputs.buildoutput }}/libheif
 
