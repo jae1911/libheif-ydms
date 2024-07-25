@@ -29,10 +29,12 @@ jobs:
                     - os: windows-latest
                       c_compiler: clang
                       cpp_compiler: clang
+                      dir_list: ls -lah
 
                     - os: ubuntu-latest
                       c_compiler: cl
                       cpp_compiler: cl
+                      dir_list: dir
         
         steps:
             - name: Check out repository code
