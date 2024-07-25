@@ -23,7 +23,7 @@ jobs:
 
             - name: Create output directory variable
               id: buildoutput
-              run: echo "build-output-dir='${{ github.workspace }}/build'" >> "$GITHUB_OUTPUT"
+              run: echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
             - name: Configure CMake
               working-directory: ${{ steps.buildoutput.outputs.buildoutput }}
