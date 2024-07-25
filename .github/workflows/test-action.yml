@@ -13,6 +13,8 @@ jobs:
                 os: [ubuntu-latest, windows-latest]
                 build_type: [Release]
                 c_compiler: [clang, cl]
+                cpp_compiler: [clang, cl]
+                dir_list: [dir, ls -lah]
                 include:
                     - os: windows-latest
                       c_compiler: cl
