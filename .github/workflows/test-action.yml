@@ -90,11 +90,11 @@ jobs:
             
             - name: "[Debug] List libheif directory"
               working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
-              run: dir "./libheif"
+              run: dir "./libheif/Release"
             
             - name: Archive and put a pretty bow on it
               uses: actions/upload-artifact@v4
               with:
                 name: libheif
-                path: ${{ steps.buildoutput.outputs.build-output-dir }}/libheif
+                path: ${{ steps.buildoutput.outputs.build-output-dir }}/libheif/Release
 
