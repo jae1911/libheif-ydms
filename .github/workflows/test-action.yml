@@ -23,7 +23,6 @@ jobs:
 
             - name: Create output directory variable
               id: buildoutput
-              shell: bash
               run: echo "build-output-dir='${{ github.workspace }}/build'" >> "$GITHUB_OUTPUT"
 
             - name: Configure CMake
@@ -50,7 +49,7 @@ jobs:
     
     Build-Windows:
         runs-on: windows-latest
-        
+
         steps:
             - name: Check out repository code
               uses: actions/checkout@v4
@@ -65,8 +64,7 @@ jobs:
 
             - name: Create output directory variable
               id: buildoutput
-              shell: bash
-              run: echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+              run: echo "build-output-dir=${{ github.workspace }}/build" >> "$Env:GITHUB_OUTPUT"
 
             - name: Configure CMake
               working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
