@@ -54,6 +54,9 @@ jobs:
               id: buildoutput
               run: echo "build-output-dir=${{ github.workspace }}/build" >> "$Env:GITHUB_OUTPUT"
 
+            - name: Install ninja-build tool
+              uses: seanmiddleditch/gha-setup-ninja@v5
+
             - name: Grab AOM for basic AVIF encoding/decoding
               working-directory: ${{ github.workspace }}/third-party
               run: ./aom.cmd
