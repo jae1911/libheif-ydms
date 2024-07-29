@@ -16,9 +16,6 @@ jobs:
               uses: actions/checkout@v4
 
             - run: echo "${{ github.repository }} cloned"
-            
-            - name: "[Debug] List directory contents"
-              run: ls -lah
 
             - name: Make build directory
               run: mkdir build
@@ -30,22 +27,10 @@ jobs:
             - name: Configure CMake
               working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
               run: cmake --preset=release-noplugins ..
-            
-            - name: "[Debug] List build config"
-              working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
-              run: ls -lah
 
             - name: Build libheif
               working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
               run: make
-            
-            - name: "[Debug] List build directory contents again"
-              working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
-              run: ls -lah
-            
-            - name: "[Debug] List libheif directory"
-              working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
-              run: "ls -lah ./libheif"
             
             - name: Archive and put a pretty bow on it
               uses: actions/upload-artifact@v4
@@ -61,9 +46,6 @@ jobs:
               uses: actions/checkout@v4
 
             - run: echo "${{ github.repository }} cloned"
-            
-            - name: "[Debug] List directory contents"
-              run: dir
 
             - name: Make build directory
               run: mkdir build
@@ -72,25 +54,17 @@ jobs:
               id: buildoutput
               run: echo "build-output-dir=${{ github.workspace }}/build" >> "$Env:GITHUB_OUTPUT"
 
+            - name: Grab AOM for basic AVIF encoding/decoding
+              working-directory: ${{ github.workspace }}/third-party
+              run: ./aom.cmd
+
             - name: Configure CMake
               working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
               run: cmake --preset=release-noplugins ..
-            
-            - name: "[Debug] List build config"
-              working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
-              run: dir
 
             - name: Build libheif
               working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
               run: cmake --build . --config Release
-            
-            - name: "[Debug] List build directory contents again"
-              working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
-              run: dir
-            
-            - name: "[Debug] List libheif directory"
-              working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
-              run: dir "./libheif/Release"
             
             - name: Archive and put a pretty bow on it
               uses: actions/upload-artifact@v4
