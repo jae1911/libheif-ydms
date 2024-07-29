@@ -40,7 +40,6 @@ jobs:
     
     Build-Windows:
         runs-on: windows-latest
-
         steps:
             - name: Check out repository code
               uses: actions/checkout@v4
@@ -56,6 +55,9 @@ jobs:
 
             - name: Install ninja-build tool
               uses: seanmiddleditch/gha-setup-ninja@master
+            
+            - name: Install nasm
+              uses: ilammy/setup-nasm@v1
 
             - name: Grab AOM for basic AVIF encoding/decoding
               working-directory: ${{ github.workspace }}/third-party
