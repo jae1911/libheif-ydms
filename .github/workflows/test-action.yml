@@ -59,7 +59,7 @@ jobs:
               working-directory: ${{ github.workspace }}/third-party
               run: |
                 ./aom.cmd
-                dir ./aom/build.libavif
+                cat ./aom/build.libavif/build.ninja
 
             - name: Configure CMake
               working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
