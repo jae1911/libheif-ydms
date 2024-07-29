@@ -41,6 +41,10 @@ jobs:
     Build-Windows:
         runs-on: windows-latest
         steps:
+            - uses: ilammy/setup-nasm@v1
+            - uses: seanmiddleditch/gha-setup-ninja@master
+
+
             - name: Check out repository code
               uses: actions/checkout@v4
 
@@ -52,12 +56,6 @@ jobs:
             - name: Create output directory variable
               id: buildoutput
               run: echo "build-output-dir=${{ github.workspace }}/build" >> "$Env:GITHUB_OUTPUT"
-
-            - name: Install ninja-build tool
-              uses: seanmiddleditch/gha-setup-ninja@master
-            
-            - name: Install nasm
-              uses: ilammy/setup-nasm@v1
 
             - name: Grab AOM for basic AVIF encoding/decoding
               working-directory: ${{ github.workspace }}/third-party
