@@ -60,11 +60,10 @@ jobs:
               shell: bash
               run: |
                 bash aom.cmd
-                cat ./aom/build.libavif/build.ninja
 
             - name: Configure CMake
               working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
-              run: cmake --preset=release-noplugins ..
+              run: $Env:PKG_CONFIG_PATH = "${{ github.workspace }}/third-party/aom/dist/lib/pkgconfig"; cmake --preset=release-noplugins ..
 
             - name: Build libheif
               working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
