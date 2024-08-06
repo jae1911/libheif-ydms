@@ -7,7 +7,6 @@ project(libheif LANGUAGES C CXX VERSION 1.17.6)
 # With v2.0.0, we can reset this to more closely follow the real version name, i.e. "2.0.0".
 # CMake 3.17.0 added "MACHO_COMPATIBILITY_VERSION", but we are currently stuck at cmake 3.16.3.
 set(MACOS_COMPATIBLE_VERSION "17.0.0")
-set(ENV{PKG_CONFIG_PATH} "${CMAKE_SOURCE_DIR}/third-party/aom/dist/lib/pkgconfig")
 
 # https://cmake.org/cmake/help/v3.1/policy/CMP0054.html
 cmake_policy(VERSION 3.0...3.22)
