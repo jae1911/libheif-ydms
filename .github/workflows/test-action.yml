@@ -59,7 +59,7 @@ jobs:
               working-directory: ${{ github.workspace }}/third-party
               shell: bash
               run: |
-                ./aom.cmd
+                bash aom.cmd
                 cat ./aom/build.libavif/build.ninja
 
             - name: Configure CMake
