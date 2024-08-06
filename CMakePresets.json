@@ -120,6 +120,7 @@
         "WITH_OpenJPEG_DECODER" : "OFF",
         "WITH_OpenJPEG_ENCODER" : "OFF",
         "WITH_FFMPEG_DECODER" : "OFF",
+        "PKG_CONFIG_PATH": "third-party/aom/dist/lib/pkgconfig",
 
         "WITH_REDUCED_VISIBILITY" : "ON",
         "WITH_DEFLATE_HEADER_COMPRESSION" : "OFF",
