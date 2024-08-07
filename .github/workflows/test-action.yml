@@ -64,8 +64,7 @@ jobs:
             - name: Configure CMake
               working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
               run: |
-                echo "${{ github.workspace }}\third-party\aom\dist\lib\pkgconfig" >> "$Env:PKG_CONFIG_PATH"
-                cmake --preset=release-noplugins ..
+                cmake --preset=release-noplugins .. -DAOM_INCLUDE_DIR="${{ github.workspace }}\third-party\aom"
 
             - name: Build libheif
               working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
