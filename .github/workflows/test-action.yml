@@ -64,7 +64,7 @@ jobs:
             - name: Configure CMake
               working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
               run: |
-                cmake --preset=release-noplugins .. -DAOM_INCLUDE_DIR="${{ github.workspace }}\third-party\aom\aom"
+                cmake --preset=release-noplugins .. -DAOM_INCLUDE_DIR="${{ github.workspace }}\third-party\aom" -DAOM_LIBRARY="${{ github.workspace }}\third-party\aom"
 
             - name: Build libheif
               working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
