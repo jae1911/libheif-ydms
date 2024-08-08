@@ -57,9 +57,8 @@ jobs:
             - uses: seanmiddleditch/gha-setup-ninja@master
             - name: Grab AOM for basic AVIF encoding/decoding
               working-directory: ${{ github.workspace }}/third-party
-              shell: bash
               run: |
-                bash aom.cmd
+                .\aom.cmd
 
             - name: Configure CMake
               working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
