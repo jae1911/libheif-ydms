@@ -66,8 +66,6 @@ jobs:
 
                 cmake --build . --config Release
 
-                tree /f .
-
             - name: Configure CMake
               working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
               run: |
