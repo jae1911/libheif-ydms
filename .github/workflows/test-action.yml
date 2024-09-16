@@ -2,10 +2,7 @@ name: Build libheif
 run-name: ${{ github.actor }} is building libheif
 on:
     push:
-        branches:
-            - cyro/feat/libheif-build-actions
-
-# on: workflow_dispatch
+    workflow_dispatch:
 
 jobs:
     Build-Linux:
@@ -44,8 +41,6 @@ jobs:
             - name: Check out repository code
               uses: actions/checkout@v4
 
-            - run: echo "${{ github.repository }} cloned"
-
             - name: Make build directory
               run: mkdir build
 
@@ -54,24 +49,29 @@ jobs:
               run: echo "build-output-dir=${{ github.workspace }}/build" >> "$Env:GITHUB_OUTPUT"
 
             - uses: ilammy/setup-nasm@v1
-            - uses: seanmiddleditch/gha-setup-ninja@master
-            - name: Grab AOM for basic AVIF encoding/decoding
-              working-directory: ${{ github.workspace }}/third-party
+
+            - name: Compile AOM
               run: |
-                git clone -b v3.9.0 --depth 1 https://aomedia.googlesource.com/aom
+                cd "${{ github.workspace }}\third-party"
+
+                git clone -b v3.6.0 --depth 1 https://aomedia.googlesource.com/aom
 
                 cd aom
 
-                cmake -S . -B build.libavif -G Ninja -DCMAKE_INSTALL_PREFIX="${{ github.workspace }}/third-party/aom/dist" -DCMAKE_BUILD_TYPE=Release -DENABLE_DOCS=0 -DENABLE_EXAMPLES=0 -DENABLE_TESTDATA=0 -DENABLE_TESTS=0 -DENABLE_TOOLS=0
-                ninja -C build.libavif
-                ninja -C build.libavif install
+                mkdir buildx
 
-                cd ..
+                cd buildx
+
+                cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_DOCS=0 -DENABLE_EXAMPLES=0 -DENABLE_TESTDATA=0 -DENABLE_TESTS=0 -DENABLE_TOOLS=0 ..
+
+                cmake --build . --config Release
+
+                tree /f .
 
             - name: Configure CMake
               working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
               run: |
-                cmake --preset=release-noplugins .. -DAOM_INCLUDE_DIR="${{ github.workspace }}\third-party\aom" -DAOM_LIBRARY="${{ github.workspace }}\third-party\aom\dist\lib\libaom.a"
+                cmake --preset=release-noplugins .. -DAOM_INCLUDE_DIR="${{ github.workspace }}\third-party\aom" -DAOM_LIBRARY="${{ github.workspace }}\third-party\aom\buildx\Release\aom.lib"
 
             - name: Build libheif
               working-directory: ${{ steps.buildoutput.outputs.build-output-dir }}
@@ -82,4 +82,3 @@ jobs:
               with:
                 name: libheif-windows
                 path: ${{ steps.buildoutput.outputs.build-output-dir }}/libheif/Release
-
