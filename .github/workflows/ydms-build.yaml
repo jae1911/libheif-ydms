@@ -6,13 +6,24 @@ on:
 
 jobs:
     Build-Linux:
-        runs-on: ubuntu-latest
+        strategy:
+          matrix:
+            osver: [ubuntu-latest, ubuntu-24.04-arm]
+
+        runs-on: ${{ matrix.osver }}
         
         steps:
             - name: Check out repository code
               uses: actions/checkout@v4
 
-            - run: echo "${{ github.repository }} cloned"
+            - name: Set dist name
+              run: |
+                if ${{ matrix.osver == 'ubuntu-24.04-arm' }}; then
+                  echo "distname=libheif-linux-arm" >> "$GITHUB_ENV"
+                else
+                  echo "distname=libheif-linux" >> "$GITHUB_ENV"
+                fi
+
 
             - name: Make build directory
               run: mkdir build
@@ -32,7 +43,7 @@ jobs:
             - name: Archive and put a pretty bow on it
               uses: actions/upload-artifact@v4
               with:
-                name: libheif-linux
+                name: ${{ env.distname }}
                 path: ${{ steps.buildoutput.outputs.build-output-dir }}/libheif
     
     Build-Windows:
