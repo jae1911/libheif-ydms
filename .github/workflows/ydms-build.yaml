@@ -24,6 +24,11 @@ jobs:
                   echo "distname=libheif-linux" >> "$GITHUB_ENV"
                 fi
 
+            - name: Install libaom
+              run: |
+                sudo apt-get update
+                sudo apt-get install -y libaom-dev
+
 
             - name: Make build directory
               run: mkdir build
